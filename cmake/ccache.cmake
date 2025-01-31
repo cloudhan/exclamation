@@ -1,0 +1,12 @@
+find_program(CCACHE_PATH ccache)
+
+macro(configure_ccache CCACHE_PATH)
+  if(CCACHE_PATH)
+    message(STATUS "Configuring ${CCACHE_PATH} as compiler launcher")
+    set(CMAKE_C_COMPILER_LAUNCHER "${CCACHE_PATH}")
+    set(CMAKE_CXX_COMPILER_LAUNCHER "${CCACHE_PATH}")
+    set(CMAKE_CUDA_COMPILER_LAUNCHER "${CCACHE_PATH}")
+  else()
+    message(WARNING "Invalid CCACHE_PATH: ${CCACHE_PATH}")
+  endif()
+endmacro()

@@ -1,0 +1,10 @@
+add_subdirectory(cuda/paged_attention)
+
+add_library(exclamation_base INTERFACE)
+target_include_directories(exclamation_base INTERFACE ${CMAKE_CURRENT_LIST_DIR}/..)
+
+add_library(exclamation_split_compilation INTERFACE)
+target_compile_definitions(exclamation_split_compilation INTERFACE EXCLAMATION_SPLIT_COMPILATION=1)
+
+add_library(exclamation_cuda $<TARGET_OBJECTS:paged_attention>)
+target_link_libraries(exclamation_cuda PUBLIC exclamation_split_compilation)

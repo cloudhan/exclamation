@@ -1,0 +1,20 @@
+BasedOnStyle: google
+TabWidth: 2
+IndentWidth: 2
+AccessModifierOffset: -2
+ColumnLimit: 0  # opt for manually wrapping at 120 column limit
+PointerAlignment: Left
+FixNamespaceComments: true
+ShortNamespaceLines: 0
+
+SortIncludes: Never
+
+AlwaysBreakTemplateDeclarations: Yes
+AllowShortEnumsOnASingleLine: false
+AllowShortFunctionsOnASingleLine: Empty
+AllowShortIfStatementsOnASingleLine: Never
+BreakConstructorInitializers: BeforeComma
+
+AlignEscapedNewlines: Right  # ColumnLimit: 0 basically means Left.
+AlignAfterOpenBracket: BlockIndent
+InsertBraces: true

@@ -76,11 +76,7 @@ broadcast(const T& in) {
       GroupSize == 16 || GroupSize == 32 || GroupSize == constant::WarpSize
   );
 
-#if !defined(__HIPCC__)
   return __shfl_sync(uint32_t(-1), in, 0, GroupSize);
-#else
-  return __shfl(in, 0, GroupSize);
-#endif
 }
 
 }  // namespace warp

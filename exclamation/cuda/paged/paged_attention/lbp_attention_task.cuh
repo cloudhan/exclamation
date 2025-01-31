@@ -393,7 +393,6 @@ struct PagedAttentionTask {
             load_tB(tB, tB_view(_, _0{}, p), tSB_view(_, _0{}, p, _));
             qk += inner_product<float>(tA, tB);
           }
-          schedule_barrier();
         }
         qk *= scale;
         // reduce in thread group to get the full qk
@@ -466,7 +465,6 @@ struct PagedAttentionTask {
               load_tB(tB, tB_view(_, j), tSB_view(_, j, _));
               acc(j) += inner_product<float>(tA, tB);
             }
-            schedule_barrier();
           }
         } else {
           enforce_uniform();

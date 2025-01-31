@@ -1,12 +1,7 @@
 #pragma once
 
-#if !defined(__HIPCC__)
 #include <cuda_fp16.h>
 #include "contrib_ops/cuda/bert/paged/platform_ext.cuh"
-#else
-#include <hip/hip_fp16.h>
-#include "contrib_ops/rocm/bert/paged/platform_ext.cuh"
-#endif
 
 #include "cute/tensor.hpp"
 

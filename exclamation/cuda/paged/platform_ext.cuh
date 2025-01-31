@@ -8,11 +8,6 @@ namespace constant {
 inline constexpr const int WarpSize = 32;
 }  // namespace constant
 
-__forceinline__ __device__ void
-schedule_barrier() {
-  // do nothing
-}
-
 __noinline__ __device__ static void
 enforce_uniform() {
   asm("ret.uni;\n" ::);

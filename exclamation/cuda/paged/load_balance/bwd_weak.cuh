@@ -25,12 +25,7 @@ __forceinline__ __device__ int32_t
 atomic_load_global_i32(const int32_t* address) {
   int32_t ret;
   if constexpr (std::is_same_v<Sem, memory_order::Relaxed> && std::is_same_v<Scope, memory_scope::Gpu>) {
-#if !defined(__HIPCC__)
     asm volatile("ld.relaxed.gpu.global.s32 %0, [%1];" : "=r"(ret) : "l"(address));
-#else
-    // ret = __atomic_load_n(address, __ATOMIC_RELAXED);
-    ret = volatile_load(address);
-#endif
   } else {
     static_assert(onnxruntime::contrib::paged::always_false<Sem, Scope>, "not implemented");
   }
@@ -42,11 +37,7 @@ __forceinline__ __device__ uint32_t
 atomic_load_global_u32(uint32_t* address) {
   uint32_t ret;
   if constexpr (std::is_same_v<Sem, memory_order::Relaxed> && std::is_same_v<Scope, memory_scope::Gpu>) {
-#if !defined(__HIPCC__)
     asm volatile("ld.relaxed.gpu.global.u32 %0, [%1];" : "=r"(ret) : "l"(address));
-#else
-    ret = __atomic_load_n(address, __ATOMIC_RELAXED);
-#endif
   } else {
     static_assert(onnxruntime::contrib::paged::always_false<Sem, Scope>, "not implemented");
   }
@@ -57,20 +48,9 @@ template <typename Sem, typename Scope = memory_scope::Gpu>
 __forceinline__ __device__ void
 atomic_store_global_u32(uint32_t* address, uint32_t val) {
   if constexpr (std::is_same_v<Sem, memory_order::Relaxed> && std::is_same_v<Scope, memory_scope::Gpu>) {
-#if !defined(__HIPCC__)
     asm volatile("st.relaxed.gpu.global.u32 [%0], %1;" ::"l"(address), "r"(val));
-#else
-    // __atomic_store_n(address, val, __ATOMIC_RELAXED);
-    volatile_store(address, val);
-#endif
   } else if constexpr (std::is_same_v<Sem, memory_order::Release> && std::is_same_v<Scope, memory_scope::Gpu>) {
-#if !defined(__HIPCC__)
     asm volatile("st.release.gpu.global.u32 [%0], %1;" ::"l"(address), "r"(val));
-#else
-    // __atomic_store_n(address, val, __ATOMIC_RELEASE);
-    __threadfence();
-    volatile_store(address, val);
-#endif
   } else {
     static_assert(onnxruntime::contrib::paged::always_false<Sem, Scope>, "not implemented");
   }
@@ -81,11 +61,7 @@ __forceinline__ __device__ int32_t
 atomic_add_global_i32(int32_t* address, int32_t val) {
   int32_t old;
   if constexpr (std::is_same_v<Sem, memory_order::Relaxed> && std::is_same_v<Scope, memory_scope::Gpu>) {
-#if !defined(__HIPCC__)
     asm volatile("atom.relaxed.gpu.global.add.s32 %0, [%1], %2;" : "=r"(old) : "l"(address), "r"(val));
-#else
-    old = __atomic_fetch_add(address, val, __ATOMIC_RELAXED);
-#endif
   } else {
     static_assert(onnxruntime::contrib::paged::always_false<Sem, Scope>, "not implemented");
   }
@@ -103,11 +79,7 @@ __forceinline__ __device__ uint32_t
 atomic_add_global_u32(uint32_t* address, uint32_t val) {
   uint32_t old;
   if constexpr (std::is_same_v<Sem, memory_order::Relaxed> && std::is_same_v<Scope, memory_scope::Gpu>) {
-#if !defined(__HIPCC__)
     asm volatile("atom.relaxed.gpu.global.add.u32 %0, [%1], %2;" : "=r"(old) : "l"(address), "r"(val));
-#else
-    old = __atomic_fetch_add(address, val, __ATOMIC_RELAXED);
-#endif
   } else {
     static_assert(onnxruntime::contrib::paged::always_false<Sem, Scope>, "not implemented");
   }
@@ -118,12 +90,7 @@ template <typename Sem, typename Scope = memory_scope::Gpu>
 __forceinline__ __device__ void
 memory_barrier() {
   if constexpr (std::is_same_v<Scope, memory_scope::Gpu>) {
-#if !defined(__HIPCC__)
     asm volatile("fence.acq_rel.gpu;" ::);
-#else
-    // __atomic_thread_fence(__ATOMIC_ACQ_REL);
-    __threadfence();
-#endif
   } else {
     static_assert(onnxruntime::contrib::paged::always_false<Sem, Scope>, "not implemented");
   }

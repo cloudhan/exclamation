@@ -1,10 +1,6 @@
 #pragma once
 
-#if !defined(__HIP_PLATFORM_AMD__)
 #include <cuda_runtime_api.h>
-#else
-#include <hip/hip_runtime_api.h>
-#endif
 
 #include <cstdint>
 
@@ -16,20 +12,7 @@ namespace detail {
 
 __forceinline__ __device__ void
 nanosleep(uint32_t duration_ns) {
-#if !defined(__HIPCC__)
   __nanosleep(duration_ns);
-#else
-  asm volatile(R"asm(
-      S_NOP 0
-      S_NOP 0
-      S_NOP 0
-      S_NOP 0
-      S_NOP 0
-      S_NOP 0
-      S_NOP 0
-      S_NOP 0
-    )asm" ::);
-#endif
 }
 }  // namespace detail
 

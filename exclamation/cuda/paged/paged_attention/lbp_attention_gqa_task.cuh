@@ -313,7 +313,6 @@ struct PagedGroupQueryAttentionTask : public PagedAttentionTask<NumThreads, Head
             for (int i = 0; i < Config::NumQueriesPerCta; i++) {
               copy(AutoVectorizingCopyWithAssumedAlignment<cute::min(8 * sizeof(TQ) * size(tA), 128)>{}, tA_view(_, _0{}, p, i), tA);
               qk(i) += inner_product<float>(tA, tB);
-              schedule_barrier();
             }
           }
         }
@@ -398,7 +397,6 @@ struct PagedGroupQueryAttentionTask : public PagedAttentionTask<NumThreads, Head
               for (int i = 0; i < Config::NumQueriesPerCta; i++) {
                 copy(AutoVectorizingCopyWithAssumedAlignment<cute::min(8 * sizeof(float) * Gemv2ValK, 128)>{}, tA_view(_, i), tA);
                 acc(j, i) += inner_product<float>(tA, tB);
-                schedule_barrier();
               }
             }
           }

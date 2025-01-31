@@ -1,4 +1,3 @@
-// Modifications Copyright (c) Microsoft.
 // Copyright (c) 2016-present, Facebook, Inc.
 // Licensed under the BSD-3-Clause License.
 

@@ -1,6 +1,3 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
-
 #define PAGED_ATTENTION_KERNEL_IMPL 1
 #include "contrib_ops/cuda/bert/paged/paged_attention/lbp_attention_ws.cuh"
 

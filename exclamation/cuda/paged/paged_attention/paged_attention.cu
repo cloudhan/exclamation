@@ -1,6 +1,3 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
-
 #include "contrib_ops/cuda/bert/paged/paged_attention/paged_attention.h"
 
 #include "contrib_ops/cuda/bert/paged/cuda_common.cuh"

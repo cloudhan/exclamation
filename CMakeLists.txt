@@ -35,3 +35,4 @@ endif()
 include(cmake/third_party/cutlass_repo.cmake)
 
 add_subdirectory(exclamation)
+add_subdirectory(python)

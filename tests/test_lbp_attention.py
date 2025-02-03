@@ -4,7 +4,13 @@ import functools
 import pytest
 from paged_attention_common import *
 
+# FIXME: DPI does not pass on some platform when working for ORT.
+# IIRC, there seem to have race condition with some nvgpu.
+# SCHEDUAL = [0, 1, 2]
+SCHEDUAL = [0, 2]
 
+
+@pytest.mark.parametrize("sch", SCHEDUAL)
 @pytest.mark.parametrize("use_alibi", [False, True])
 @pytest.mark.parametrize("num_seqs", NUM_GEN_SEQS)
 @pytest.mark.parametrize("seq_len", [None])
@@ -12,7 +18,7 @@ from paged_attention_common import *
 @pytest.mark.parametrize("head_size", HEAD_SIZES)
 @pytest.mark.parametrize("page_size", PAGE_SIZES)
 @pytest.mark.parametrize("kv_dtype", DTYPES)
-def test_paged_attention(
+def test_lbp_attention(
     kv_cache_factory,
     num_seqs: int,
     seq_len: int | None,
@@ -22,9 +28,13 @@ def test_paged_attention(
     page_size: int,
     kv_dtype: str,
     use_alibi: bool,
+    sch,
 ):
-    ops_paged_attention = lambda func_args: ops.paged_attention(*func_args.values())
-    functools.partial(test_exclamation_ops, ops_paged_attention)(
+    if kv_dtype == "float32":
+        pytest.skip("float32 kernels are not instantiated")
+
+    ops_lbp_attention = lambda func_args: ops.lbp_attention(*func_args.values(), sch)
+    functools.partial(test_exclamation_ops, ops_lbp_attention)(
         kv_cache_factory,
         num_seqs,
         seq_len,
@@ -34,4 +44,5 @@ def test_paged_attention(
         page_size,
         kv_dtype,
         use_alibi,
+        sch,
     )

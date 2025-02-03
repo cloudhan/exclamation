@@ -19,6 +19,7 @@ include(${PROJECT_SOURCE_DIR}/cmake/third_party/pybind11_repo.cmake)
 
 set(binding_srcs
   paged_attention_torch.cu
+  lbp_attention_torch.cu
 )
 
 # explicitly mark the target as SHARED instead of MODULE so that the so library

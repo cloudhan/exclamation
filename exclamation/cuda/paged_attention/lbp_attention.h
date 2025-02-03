@@ -8,8 +8,12 @@ struct DataParallelOutOfPlace {};
 struct DataParallelInPlace {};
 struct WorkStealing {};
 
-template <typename TIO, typename TKV, typename TSB, typename Sch>
+template <typename TIO_, typename TKV_, typename TSB_, typename Sch>
 struct LBPAttentionKernel {
+  using TIO = TIO_;
+  using TKV = TKV_;
+  using TSB = TSB_;
+
   static void launch(
       stream_t stream,
       dev_props_ptr dev_props,
